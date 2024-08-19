@@ -30,7 +30,7 @@ impl App {
 	}
 
 	fn selected_to_file(&self, selected: OsString) {
-		if let Some(p) = &ARGS.chooser_file {
+		if let Some(p) = &ARGS.cho_file {
 			std::fs::write(p, selected.as_encoded_bytes()).ok();
 		}
 	}

@@ -1,6 +1,7 @@
-use std::time::Duration;
+use std::{ffi::OsString, time::Duration};
 
 use tokio::{select, time};
+use yazi_boot::ARGS;
 use yazi_config::popup::InputCfg;
 use yazi_proxy::InputProxy;
 use yazi_shared::{emit, event::{Cmd, EventQuit}};
@@ -20,7 +21,12 @@ impl From<Cmd> for Opt {
 
 impl Manager {
 	pub fn quit(&self, opt: impl Into<Opt>, tasks: &Tasks) {
-		let opt = EventQuit { no_cwd_file: opt.into().no_cwd_file, ..Default::default() };
+		let selected = if ARGS.cho_file.is_some() {
+			Some(self.selected_or_hovered(false).map(|u| u.as_os_str()).collect::<Vec<_>>().join(&OsString::from("\n")))
+		} else {
+			None
+		};
+		let opt = EventQuit { no_cwd_file: opt.into().no_cwd_file, selected };
 
 		let ongoing = tasks.ongoing().clone();
 		let left = ongoing.lock().len();

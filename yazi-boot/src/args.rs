@@ -12,6 +12,9 @@ pub struct Args {
 	/// Write the cwd on exit to this file
 	#[arg(long)]
 	pub cwd_file:     Option<PathBuf>,
+	/// Write the selected files on exit to this file
+	#[arg(long)]
+	pub cho_file:     Option<PathBuf>,
 	/// Write the selected files to this file on open fired
 	#[arg(long)]
 	pub chooser_file: Option<PathBuf>,
